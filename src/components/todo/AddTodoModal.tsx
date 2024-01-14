@@ -1,3 +1,5 @@
+import { addTodo } from "@/redux/features/todoSlice";
+import { useAppDispatch } from "@/redux/hook";
 import { FormEvent, useState } from "react";
 import { Button } from "../ui/button";
 import {
@@ -12,15 +14,17 @@ import {
 } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { useAppDispatch } from "@/redux/hook";
-import { addTodo } from "@/redux/features/todoSlice";
 
 const AddTodoModal = () => {
   const [task, setTask] = useState("");
   const [description, setDescription] = useState("");
   const dispatch = useAppDispatch();
+  
+
+  const randomString = Math.random().toString(36).substring(2, 7);
 
   const todoDetails = {
+    id: randomString,
     title: task,
     description,
   };
