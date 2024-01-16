@@ -1,9 +1,11 @@
 import { useAppDispatch } from "@/redux/hook";
 import { Button } from "../ui/button";
 import { removeTodo, toggleComplete } from "@/redux/features/todoSlice";
+import { useUpdateTodoMutation } from "@/redux/api/api";
 
 type TTodoCardProps = {
   todo: {
+    _id: string;
     id: string;
     title: string;
     description: string;
@@ -13,11 +15,21 @@ type TTodoCardProps = {
 };
 
 const TodoCard = ({ todo }: TTodoCardProps) => {
-  const dispatch = useAppDispatch();
-  const { id, title, description, isCompleted, priority } = todo;
+  // const dispatch = useAppDispatch();
+  const { _id, id, title, description, isCompleted, priority } = todo;
+
+  const [updateTodo, { isLoading }] = useUpdateTodoMutation();
 
   const toggleState = () => {
-    dispatch(toggleComplete(id));
+    // dispatch(toggleComplete(id));
+    const options = {
+      id: _id,
+      data: {
+        isCompleted: !isCompleted,
+      },
+    };
+
+    updateTodo(options);
   };
 
   return (
@@ -28,6 +40,7 @@ const TodoCard = ({ todo }: TTodoCardProps) => {
         type="checkbox"
         name="complete"
         id="complete"
+        defaultChecked={isCompleted}
       />
       <p className="font-semibold flex-1">{title}</p>
       <div className="flex-1 flex items-center gap-2">
@@ -66,7 +79,7 @@ const TodoCard = ({ todo }: TTodoCardProps) => {
             />
           </svg>
         </Button>
-        <Button onClick={() => dispatch(removeTodo(id))} className="bg-red-500">
+        <Button onClick={() => {}} className="bg-red-500">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
